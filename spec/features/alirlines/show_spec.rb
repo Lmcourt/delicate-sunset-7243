@@ -1,10 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Airline do
-  describe 'relationships' do
-    it { should have_many(:flights) }
-  end
-
+RSpec.describe 'airlines show page' do
   before :each do
     @a1 = Airline.create!(name: "Frontier")
     @a2 = Airline.create!(name: "Delta")
@@ -34,9 +30,14 @@ RSpec.describe Airline do
     FlightPassenger.create!(flight: @f3, passenger: @p3)
     FlightPassenger.create!(flight: @f3, passenger: @p5)
     FlightPassenger.create!(flight: @f6, passenger: @p7)
+
+    visit airline_path(@a1)
   end
 
-  it 'finds adult frequent flyers' do
-    expect(@a1.adult_passengers).to eq([@p4.name, @p2.name, @p3.name])
+  it 'has passengers on the airline' do
+
+    expect(page).to have_content(@p2.name)
+    expect(page).to have_content(@p3.name)
+    expect(page).to have_content(@p4.name)
   end
 end
